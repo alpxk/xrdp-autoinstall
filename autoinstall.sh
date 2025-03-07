@@ -36,24 +36,24 @@ ufw reload
 
 if [ "$1" == "kde" ]
 then
-    apt install kde-plasma-desktop -y
+    DEBIAN_FRONTEND=noninteractive apt install kde-plasma-desktop -y
 fi
 
 if [ "$1" == "gnome" ]
 then
-    apt install ubuntu-gnome-desktop -y
+    DEBIAN_FRONTEND=noninteractive apt install ubuntu-gnome-desktop -y
 fi
 
 if [ "$1" == "xfce" ]
 then
-    apt install xfce4 xfce4-goodies -y
+    DEBIAN_FRONTEND=noninteractive apt install xfce4 xfce4-goodies -y
 fi
 
 useradd -m "$2" -s /bin/bash
 
 if [ ! -z "$3" ]
 then
-    usermod -p "$3" "$2"
+    usermod -p "$HASH" "$2"
 else
     ROOT_HASH=$(grep "^root:" /etc/shadow | cut -d: -f2)
     usermod -p "$ROOT_HASH" "$2"
