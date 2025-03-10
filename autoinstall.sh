@@ -21,10 +21,17 @@ WHITE='\033[1;37m'
 BG_RED='\033[41m'
 NC='\033[0m'
 HASH=$(openssl passwd -6 "$3")
+DESKTOPS=("lxqt" "kde" "gnome" "xfce")
 
 if [ "$EUID" -ne 0 ]
 then echo -e "${WHITE}${BG_RED}Please run as root${NC}"
     exit
+fi
+
+if [[ -z "$1" || ! " ${DESKTOPS[@]} " =~ " $1 " ]];
+then
+    echo "Invalid or missing desktop environment. Available options: ${DESKTOPS[*]}"
+    exit 1
 fi
 
 echo -e "${YELLOW}Upgrading system${NC}"
@@ -33,6 +40,11 @@ DEBIAN_FRONTEND=noninteractive apt install xrdp -y
 adduser xrdp ssl-cert
 ufw allow 3389/tcp
 ufw reload
+
+if [ "$1" == "lxqt" ]
+then
+    DEBIAN_FRONTEND=nonitercative apt install -y lxqt sddm
+fi
 
 if [ "$1" == "kde" ]
 then
