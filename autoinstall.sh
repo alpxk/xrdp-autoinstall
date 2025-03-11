@@ -30,7 +30,13 @@ fi
 
 if [[ -z "$1" || ! " ${DESKTOPS[@]} " =~ " $1 " ]];
 then
-    echo "Invalid or missing desktop environment. Available options: ${DESKTOPS[*]}"
+    echo -e "{$RED}Invalid or missing desktop environment. Available options: ${DESKTOPS[*]}{$NC}"
+    exit 1
+fi
+
+if [ -z "$2"];
+then
+    echo -e "{$RED}You have to specify RDP user and optionally password, if password will not be specified, the root password will be used.{$NC}"
     exit 1
 fi
 
